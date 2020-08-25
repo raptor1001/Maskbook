@@ -17,6 +17,7 @@ import { DecryptedPostDebug } from './DecryptedPostDebug'
 import { usePostInfoDetails } from '../../DataSource/usePostInfo'
 import { asyncIteratorWithResult } from '../../../utils/type-transform/asyncIteratorHelpers'
 import { getActivatedUI } from '../../../social-network/ui'
+import { Err, Ok } from 'ts-results'
 
 function progressReducer(
     state: { key: string; progress: SuccessDecryption | FailureDecryption | DecryptionProgress }[],
@@ -61,7 +62,11 @@ export interface DecryptPostProps {
 }
 export function DecryptPost(props: DecryptPostProps) {
     const { whoAmI, profiles, alreadySelectedPreviously, onDecrypted } = props
-    const postBy = usePostInfoDetails('postBy')
+    const currentPostBy = usePostInfoDetails('postBy')
+    const authorInPayload = usePostInfoDetails('postPayload')
+        .andThen((x) => (x.version === -38 ? Ok(x.authorUserID) : Err.EMPTY))
+        .unwrapOr(undefined)
+    const postBy = authorInPayload || currentPostBy
     const postContent = usePostInfoDetails('postContent')
     const postMetadataImages = usePostInfoDetails('postMetadataImages')
     const Success = props.successComponent || DecryptPostSuccess
@@ -133,7 +138,14 @@ export function DecryptPost(props: DecryptPostProps) {
             makeProgress(url, ServicesWithProgress.decryptFromImageUrl(url, postBy, whoAmI))
         })
         return () => controller.abort()
-    }, [postContent, postMetadataImages.join(), postBy.toText(), whoAmI.toText(), sharedPublic])
+    }, [
+        deconstructedPayload.ok,
+        postBy.toText(),
+        postContent,
+        postMetadataImages.join(),
+        sharedPublic,
+        whoAmI.toText(),
+    ])
 
     // pass 2:
     // decrypt rest attachments which depend on post content
