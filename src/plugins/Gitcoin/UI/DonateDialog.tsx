@@ -14,24 +14,24 @@ import {
     DialogActions,
     CircularProgress,
 } from '@material-ui/core'
-import { useI18N } from '../../utils/i18n-next-ui'
-import ShadowRootDialog from '../../utils/jss/ShadowRootDialog'
-import { DialogDismissIconUI } from '../../components/InjectedComponents/DialogDismissIcon'
-import { TokenSelect } from '../shared/TokenSelect'
-import { WalletSelect } from '../shared/WalletSelect'
-import { useSelectWallet } from '../shared/useWallet'
-import { EthereumTokenType } from '../Wallet/database/types'
-import { useStylesExtends } from '../../components/custom-ui-helper'
-import { getActivatedUI } from '../../social-network/ui'
+import { useI18N } from '../../../utils/i18n-next-ui'
+import ShadowRootDialog from '../../../utils/jss/ShadowRootDialog'
+import { DialogDismissIconUI } from '../../../components/InjectedComponents/DialogDismissIcon'
+import { TokenSelect } from '../../shared/TokenSelect'
+import { WalletSelect } from '../../shared/WalletSelect'
+import { useSelectWallet } from '../../shared/useWallet'
+import { EthereumTokenType } from '../../Wallet/database/types'
+import { useStylesExtends } from '../../../components/custom-ui-helper'
+import { getActivatedUI } from '../../../social-network/ui'
 import {
     useTwitterDialog,
     useTwitterButton,
     useTwitterCloseButton,
-} from '../../social-network-provider/twitter.com/utils/theme'
-import { useCapturedInput } from '../../utils/hooks/useCapturedEvents'
+} from '../../../social-network-provider/twitter.com/utils/theme'
+import { useCapturedInput } from '../../../utils/hooks/useCapturedEvents'
 import BigNumber from 'bignumber.js'
-import { formatBalance } from '../Wallet/formatter'
-import type { ERC20TokenDetails, WalletDetails } from '../../extension/background-script/PluginService'
+import { formatBalance } from '../../Wallet/formatter'
+import type { ERC20TokenDetails, WalletDetails } from '../../../extension/background-script/PluginService'
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
