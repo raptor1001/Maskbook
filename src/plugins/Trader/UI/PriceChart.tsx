@@ -61,7 +61,7 @@ export function PriceChart(props: PriceChartProps) {
         // empty the svg
         svgRef.current.innerHTML = ''
 
-        // render savg if necessary
+        // render svg if necessary
         if (!props.stats.length) return
 
         // contine to create the chart
@@ -94,7 +94,7 @@ export function PriceChart(props: PriceChartProps) {
 
         // add Y axis
         svg.append('g')
-            .attr('transform', `translate(0, 0)`)
+            .attr('transform', 'translate(0, 0)')
             .call(
                 d3
                     .axisRight(y)

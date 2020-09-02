@@ -98,7 +98,7 @@ export interface SocialNetworkUIInjections {
      */
     injectPostBox(): void
     /**
-     * This function should inject rthe page inspector
+     * This function should inject the page inspector
      */
     injectPageInspector(): void
     /**

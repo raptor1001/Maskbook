@@ -13,7 +13,7 @@ export function useCurrentCurrency(platform: Platform) {
     )
 
     // TODO:
-    // support multiple currencies
+    // support multiple crcurrencies
     const { value: currencies = [], loading, error } = useAsync(
         () => Services.Plugin.invokePlugin('maskbook.trader', 'getLimitedCurrenies', platform),
         [platform],

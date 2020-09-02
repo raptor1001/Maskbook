@@ -120,9 +120,9 @@ export default function DashboardSettingsRouter() {
     const currentApperance = useValueRef(appearanceSettings)
     const currentWholePostVisibility = useValueRef(currentWholePostVisibilitySettings)
     const langMapper = React.useRef((x: Language) => {
-        if (x === Language.en) return 'English'
-        if (x === Language.zh) return '中文'
-        if (x === Language.ja) return '日本語'
+        if (x === Language.en) return t('language_en')
+        if (x === Language.zh) return t('language_zh')
+        if (x === Language.ja) return t('language_ja')
         return x
     }).current
     const apperanceMapper = React.useRef((x: Appearance) => {

@@ -21,7 +21,7 @@ interface MaskbookTraderMessages {
     /**
      * Update settings dialog
      */
-    settingsDialogUpdated: SettingsEvent
+    settingsUpdated: SettingsEvent
 }
 
 export const MessageCenter = new BatchedMessageCenter<MaskbookTraderMessages>(true, 'maskbook-trader-events')
