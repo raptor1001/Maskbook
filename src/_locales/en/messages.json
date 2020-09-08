@@ -162,7 +162,7 @@
     "post_dialog__select_recipients_title": "Select Recipients",
     "post_dialog__select_specific_friends_title": "Extra Specific Contacts ({{selected}} selected)",
     "post_dialog__title": "Maskbook: Compose",
-    "post_modal_hint__button": "🔒 Compose encrypted post 🔒",
+    "post_modal_hint__button": "Compose encrypted post",
     "post_modal_hint__title": "Looking for Maskbook?",
     "post_substitute_label": "<Maskbook_Post_Payload />",
     "privacy_policy": "Privacy Policy",
