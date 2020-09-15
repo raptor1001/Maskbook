@@ -1,9 +1,10 @@
 import { DBSchema, openDB } from 'idb/with-async-ittr-cjs'
 import { createDBAccess } from '../../../database/helpers/openDB'
 import type { ERC20TokenRecord, WalletRecordInDatabase } from './types'
-import type { GitcoinDonationRecordInDatabase } from '../../Gitcoin/types'
 import type { RedPacketRecordInDatabase } from '../../RedPacket/types'
 import { RedPacketPluginID } from '../../RedPacket/constants'
+import { sideEffect } from '../../../utils/side-effects'
+import { migratePluginDatabase } from './migrate.plugins'
 
 function path<T>(x: T) {
     return x
@@ -19,16 +20,11 @@ export const createWalletDBAccess = createDBAccess(() => {
             }
             function v1_v2() {
                 // @ts-expect-error
-                db.createObjectStore('GitcoinDonation', {
-                    keyPath: path<keyof GitcoinDonationRecordInDatabase>('donation_transaction_hash'),
-                })
+                db.createObjectStore('GitcoinDonation', { keyPath: 'donation_transaction_hash' })
             }
             /**
              * The following store has been removed from v3
-             * GitcoinDonation: {
-             *     value: GitcoinDonationRecordInDatabase
-             *     key: string
-             * }
+             * GitcoinDonation: { % data dropped % }
              * RedPacket: {
              *     value: RedPacketRecordInDatabase
              *     key: string
@@ -58,16 +54,6 @@ export const createWalletDBAccess = createDBAccess(() => {
                         0: each.red_packet_id,
                     })
                 }
-                // @ts-expect-error
-                const gitcoin: GitcoinDonationRecordInDatabase[] = await db.getAll('GitcoinDonation')
-                for (const each of gitcoin) {
-                    const id = 'com.maskbook.provide.co.gitcoin'
-                    os.add({
-                        plugin_id: id,
-                        record_id: `${id}:${each.donation_transaction_hash}`,
-                        value: each,
-                    })
-                }
                 // @ts-ignore
                 db.deleteObjectStore('GitcoinDonation')
                 // @ts-ignore
@@ -79,6 +65,8 @@ export const createWalletDBAccess = createDBAccess(() => {
         },
     })
 })
+
+sideEffect.then(migratePluginDatabase)
 export interface WalletDB<Data = unknown, Indexes extends [IDBValidKey?, IDBValidKey?, IDBValidKey?] = []>
     extends DBSchema {
     // @ts-ignore
