@@ -252,7 +252,7 @@ function ExistingPacketUI(props: RedPacketDialogProps & ExistingPacketProps) {
     const insertRedPacket = (status?: RedPacketStatus | null, rpid?: RedPacketRecord['red_packet_id']) => {
         if (status === null) return onSelectExistingPacket(null)
         if (status === RedPacketStatus.pending || !rpid) return
-        Services.Plugin.invokePlugin('maskbook.red_packet', 'getRedPacketByID', undefined, rpid).then((p) =>
+        Services.Plugin.invokePlugin('maskbook.red_packet', 'getRedPacketByID', rpid).then((p) =>
             onSelectExistingPacket(p.raw_payload),
         )
     }

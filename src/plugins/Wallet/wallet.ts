@@ -56,6 +56,10 @@ export async function getTokens() {
     const tokens = await t.objectStore('ERC20Token').getAll()
     return uniqBy(tokens, (token) => token.address.toUpperCase())
 }
+export async function getToken(addr: string) {
+    const t = createTransaction(await createWalletDBAccess(), 'readonly')('ERC20Token')
+    return t.objectStore('ERC20Token').get(addr)
+}
 
 export async function getManagedWallets(): Promise<{
     wallets: (ManagedWalletRecord & { privateKey: string })[]
