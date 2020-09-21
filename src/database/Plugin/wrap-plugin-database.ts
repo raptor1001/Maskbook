@@ -56,6 +56,14 @@ export function createPluginDatabase<Data extends { type: string | number; id: s
             tx.addEventListener('complete', () => (livingTx = undefined))
             tx.addEventListener('abort', () => (livingTx = undefined))
             tx.addEventListener('error', () => (livingTx = undefined))
+            livingTransaction = tx
+            // Oops, workaround for https://bugs.webkit.org/show_bug.cgi?id=216769 or https://github.com/jakearchibald/idb/issues/201
+            try {
+                await tx.store.openCursor()
+            } catch {
+                livingTransaction = db.transaction('PluginStore', usage === 'r' ? 'readonly' : 'readwrite')
+                return livingTransaction
+            }
             return tx
         }
         return livingTx
